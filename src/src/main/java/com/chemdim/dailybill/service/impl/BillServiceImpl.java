@@ -16,17 +16,29 @@ public class BillServiceImpl implements BillService {
     private BillMapper billMapper;
 
     @Override
-    public List<Bill> getBillList(String item, String category, String paymentMethod) {
+    public List<Bill> getBillList(String item, String category, String paymentMethod, String incomeExpense) {
         QueryWrapper queryWrapper = new QueryWrapper();
         queryWrapper.eq(StringUtils.isNotBlank(item), "item", item);
         queryWrapper.eq(StringUtils.isNotBlank(paymentMethod), "paymentMethod", paymentMethod);
         queryWrapper.eq(StringUtils.isNotBlank(category), "category", category);
-//        queryWrapper.like(StringUtils.isNotBlank(username), "username", username);
+        if(!incomeExpense.equals("all")) {
+            queryWrapper.eq("incomeExpense", incomeExpense);
+        }
         return billMapper.selectList(queryWrapper);
     }
 
     @Override
     public int addBill(Bill newBill) {
         return billMapper.insert(newBill);
+    }
+
+    @Override
+    public int deleteBill(Bill deletedBill) {
+        return billMapper.deleteById(deletedBill);
+    }
+
+    @Override
+    public int modifyBill(Bill newBill) {
+        return billMapper.updateById(newBill);
     }
 }

@@ -6,7 +6,6 @@ import com.chemdim.dailybill.uitls.ResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -19,7 +18,7 @@ public class BillController {
     ResponseBody<List<Bill>> billlist(@RequestParam String item, @RequestParam String category, @RequestParam String paymentMethod, @RequestParam String incomeExpense) {
         int status = 0;
         String message = "";
-        List<Bill> billList = billService.getBillList(item, category, paymentMethod);
+        List<Bill> billList = billService.getBillList(item, category, paymentMethod, incomeExpense);
         return new ResponseBody<>(status, message, billList);
     }
     @PostMapping("/add/bill")
@@ -28,5 +27,19 @@ public class BillController {
         String message = "";
         int ret = billService.addBill(newBill);
         return new ResponseBody<>(status, message, ret );
+    }
+    @PostMapping("/delete/bill")
+    ResponseBody<?> deleteBill(@RequestBody Bill deletedBill) {
+        int status = 0;
+        String message = "";
+        int ret = billService.deleteBill(deletedBill);
+        return new ResponseBody<>(status, message, ret);
+    }
+    @PostMapping("/modify/bill")
+    ResponseBody<Integer> modifyBill(@RequestBody Bill newBill) {
+        int status = 0;
+        String message = "";
+        int ret = billService.modifyBill(newBill);
+        return new ResponseBody<>(status, message, ret);
     }
 }
