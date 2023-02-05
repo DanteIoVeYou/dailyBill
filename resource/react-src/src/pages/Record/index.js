@@ -87,12 +87,15 @@ const Record = () => {
             const category = queryBill.category;
             const paymentMethod = queryBill.paymentMethod;
             const incomeExpense = queryBill.incomeExpense;
-            const resp = await recordStore.getBillList(item, category, paymentMethod, incomeExpense);
+            const startDate = queryBill.startDate;
+            const endDate = queryBill.endDate;
+            const resp = await recordStore.getBillList(item, category, paymentMethod, incomeExpense, startDate, endDate);
+            resp.data.map((item) => {
+                item.payDate = item.payDate.slice(0, 10);
+            })
             setBillList(resp.data);
         }
         loadBillList();
-        console.log("oldopen: ", oldOpen);
-        console.log("open: ", open);
     }, [refreshPage]);
 
     const formatIncomeExpense = (data) => {
@@ -542,7 +545,7 @@ const Record = () => {
                 </Form.Item>
 
                 <Form.Item>
-                    <RangePicker onChange={onQueryDateRange}/>
+                    <RangePicker onChange={onQueryDateRange} />
                 </Form.Item>
 
                 <Form.Item>
