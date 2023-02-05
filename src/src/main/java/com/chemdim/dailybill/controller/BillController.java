@@ -15,10 +15,10 @@ public class BillController {
     @Autowired
     private BillService billService;
     @GetMapping("/billlist")
-    ResponseBody<List<Bill>> billlist(@RequestParam String item, @RequestParam String category, @RequestParam String paymentMethod, @RequestParam String incomeExpense) {
+    ResponseBody<List<Bill>> billlist(@RequestParam String item, @RequestParam String category, @RequestParam String paymentMethod, @RequestParam String incomeExpense, @RequestParam String startDate, @RequestParam String endDate) {
         int status = 0;
         String message = "";
-        List<Bill> billList = billService.getBillList(item, category, paymentMethod, incomeExpense);
+        List<Bill> billList = billService.getBillList(item, category, paymentMethod, incomeExpense, startDate, endDate);
         return new ResponseBody<>(status, message, billList);
     }
     @PostMapping("/add/bill")
@@ -26,7 +26,7 @@ public class BillController {
         int status = 0;
         String message = "";
         int ret = billService.addBill(newBill);
-        return new ResponseBody<>(status, message, ret );
+        return new ResponseBody<>(status, message, ret);
     }
     @PostMapping("/delete/bill")
     ResponseBody<?> deleteBill(@RequestBody Bill deletedBill) {
