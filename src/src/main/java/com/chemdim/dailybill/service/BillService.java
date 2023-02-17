@@ -1,6 +1,7 @@
 package com.chemdim.dailybill.service;
 
 import com.chemdim.dailybill.entity.Bill;
+import com.chemdim.dailybill.entity.BillChartInfo;
 
 import java.util.List;
 
@@ -12,4 +13,6 @@ public interface BillService {
     int deleteBill(Bill deletedBill);
 
     int modifyBill(Bill newBill);
+
+    List<BillChartInfo> monthbill(String year, String month);
 }

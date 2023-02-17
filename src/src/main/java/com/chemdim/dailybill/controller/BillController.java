@@ -1,6 +1,7 @@
 package com.chemdim.dailybill.controller;
 
 import com.chemdim.dailybill.entity.Bill;
+import com.chemdim.dailybill.entity.BillChartInfo;
 import com.chemdim.dailybill.service.BillService;
 import com.chemdim.dailybill.uitls.ResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,13 @@ public class BillController {
         int status = 0;
         String message = "";
         int ret = billService.modifyBill(newBill);
+        return new ResponseBody<>(status, message, ret);
+    }
+    @GetMapping("/monthbill")
+    ResponseBody<List<BillChartInfo>> monthbill(@RequestParam String year, @RequestParam String month) {
+        int status = 0;
+        String message = "";
+        List<BillChartInfo> ret = billService.monthbill(year, month);
         return new ResponseBody<>(status, message, ret);
     }
 }
