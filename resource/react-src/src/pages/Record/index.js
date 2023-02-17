@@ -308,7 +308,7 @@ const Record = () => {
             setRefreshPage(!refreshPage);
             setLoading(false);
             setOpen(false);
-        }, 3000);
+        }, 1000);
     }
 
     const submitOldBillInfo = () => {
@@ -324,7 +324,7 @@ const Record = () => {
             setRefreshPage(!refreshPage);
             setLoading(false);
             setOldOpen(false);
-        }, 3000);
+        }, 1000);
     }
 
     const deleteBillInfo = async (recordid) => {
@@ -486,6 +486,7 @@ const Record = () => {
                         style={{ width: 120 }}
                         onChange={onQueryCategory}
                         options={[
+                            { value: '' },
                             { value: '餐饮美食' },
                             { value: '服饰装扮' },
                             { value: '日用百货' },
@@ -522,6 +523,7 @@ const Record = () => {
                         style={{ width: 120 }}
                         onChange={onQueryPaymentMethod}
                         options={[
+                            { value: '' },
                             { value: '现金' },
                             { value: '数字人民币' },
                             { value: '微信' },
