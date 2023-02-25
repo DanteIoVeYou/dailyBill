@@ -1,4 +1,5 @@
-import { Table, Input, Form, Select, Space, Modal, Button, Radio, Tag, message, DatePicker } from "antd";
+import { Table, Input, Form, Select, Space, Modal, Button, Radio, Tag, message, DatePicker, FloatButton } from "antd";
+import { FileAddOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import useStore from "@/store";
 import './index.scss'
@@ -360,7 +361,7 @@ const Record = () => {
 
     return (
         <div>
-            <Button type="primary" onClick={openAddBillModal}>添加记录</Button>
+            <FloatButton onClick={ openAddBillModal } icon={ <FileAddOutlined /> }/>
             <Modal
                 open={open}
                 title="Title"

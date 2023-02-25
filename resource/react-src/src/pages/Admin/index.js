@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import useStore from "@/store";
-import { Form, Input, Table, Modal, Button } from 'antd';
+import { Form, Input, Table, Modal, Button, FloatButton } from 'antd';
+import { UserAddOutlined } from "@ant-design/icons";
 import http from "@/utils/http";
 import './index.scss';
 import { paste } from "@testing-library/user-event/dist/paste";
@@ -94,7 +95,7 @@ const Admin = () => {
     return (
         <div>
             <div>
-                <Button type="primary" onClick={openAddUserModal}>添加用户</Button>
+                <FloatButton onClick={ openAddUserModal } icon={<UserAddOutlined />}/>
                 <Modal
                     open={open}
                     title="Title"
