@@ -309,6 +309,13 @@ const Record = () => {
             setRefreshPage(!refreshPage);
             setLoading(false);
             setOpen(false);
+            setNewBill({
+                item: "",
+                category: "",
+                paymentMethod: "",
+                amount: 0,
+                incomeExpense: ""
+            });
         }, 1000);
     }
 
@@ -468,6 +475,8 @@ const Record = () => {
                 name="filterBill"
                 onFinish={onFilterBill}
                 autoComplete="off"
+                labelCol={{span: 1}}
+                wrapperCol={{span: 23}}
             >
                 <Form.Item
                     label="记录名"
@@ -547,7 +556,9 @@ const Record = () => {
                     </Radio.Group>
                 </Form.Item>
 
-                <Form.Item>
+                <Form.Item
+                    label="日期范围"
+                >
                     <RangePicker onChange={onQueryDateRange} />
                 </Form.Item>
 
