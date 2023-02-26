@@ -1,4 +1,5 @@
-import { Table, Input, Form, Select, Space, Modal, Button, Radio, Tag, message, DatePicker } from "antd";
+import { Table, Input, Form, Select, Space, Modal, Button, Radio, Tag, message, DatePicker, FloatButton } from "antd";
+import { FileAddOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import useStore from "@/store";
 import './index.scss'
@@ -308,6 +309,13 @@ const Record = () => {
             setRefreshPage(!refreshPage);
             setLoading(false);
             setOpen(false);
+            setNewBill({
+                item: "",
+                category: "",
+                paymentMethod: "",
+                amount: 0,
+                incomeExpense: ""
+            });
         }, 1000);
     }
 
@@ -360,7 +368,7 @@ const Record = () => {
 
     return (
         <div>
-            <Button type="primary" onClick={openAddBillModal}>添加记录</Button>
+            <FloatButton onClick={ openAddBillModal } icon={ <FileAddOutlined /> }/>
             <Modal
                 open={open}
                 title="Title"
@@ -467,6 +475,8 @@ const Record = () => {
                 name="filterBill"
                 onFinish={onFilterBill}
                 autoComplete="off"
+                labelCol={{span: 1}}
+                wrapperCol={{span: 23}}
             >
                 <Form.Item
                     label="记录名"
@@ -546,7 +556,9 @@ const Record = () => {
                     </Radio.Group>
                 </Form.Item>
 
-                <Form.Item>
+                <Form.Item
+                    label="日期范围"
+                >
                     <RangePicker onChange={onQueryDateRange} />
                 </Form.Item>
 

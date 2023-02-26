@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import useStore from "@/store";
-import { Form, Input, Table, Modal, Button } from 'antd';
+import { Form, Input, Table, Modal, Button, FloatButton, Space } from 'antd';
+import { UserAddOutlined } from "@ant-design/icons";
 import http from "@/utils/http";
 import './index.scss';
 import { paste } from "@testing-library/user-event/dist/paste";
@@ -66,6 +67,10 @@ const Admin = () => {
             setAddUser(!addUser);
             setLoading(false);
             setOpen(false);
+            setNewUsername("");
+            setNewPassword("");
+            setNewPassword("");
+            setNewRepeatPassword("");
         }, 3000);
     };
     const closeAddUserModal = () => {
@@ -93,83 +98,83 @@ const Admin = () => {
     }, [query, addUser]);
     return (
         <div>
-            <div>
-                <Button type="primary" onClick={openAddUserModal}>添加用户</Button>
-                <Modal
-                    open={open}
-                    title="Title"
-                    onOk={submitUserInfo}
-                    onCancel={closeAddUserModal}
-                    footer={[
-                        <Button key="back" onClick={closeAddUserModal}>
-                            返回
-                        </Button>,
-                        <Button key="submit" type="primary" loading={loading} onClick={submitUserInfo}>
-                            提交
-                        </Button>,
-                    ]}
+            <FloatButton onClick={ openAddUserModal } icon={<UserAddOutlined />}/>
+            <Modal
+                open={open}
+                title="Title"
+                onOk={submitUserInfo}
+                onCancel={closeAddUserModal}
+                footer={[
+                    <Button key="back" onClick={closeAddUserModal}>
+                        返回
+                    </Button>,
+                    <Button key="submit" type="primary" loading={loading} onClick={submitUserInfo}>
+                        提交
+                    </Button>,
+                ]}
+            >
+
+                <Form
+                    name="basic"
+                    autoComplete="off"
                 >
-
-                    <Form
-                        name="basic"
-                        autoComplete="off"
+                    <Form.Item
+                        label="Username"
+                        name="username"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input your username!',
+                            },
+                        ]}
                     >
-                        <Form.Item
-                            label="Username"
-                            name="username"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Please input your username!',
-                                },
-                            ]}
-                        >
-                            <Input onChange={onNewUsername} />
-                        </Form.Item>
+                        <Input onChange={onNewUsername} />
+                    </Form.Item>
 
-                        <Form.Item
-                            label="Email"
-                            name="email"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Please input your email!',
-                                },
-                            ]}
-                        >
-                            <Input onChange={onNewEmail} />
-                        </Form.Item>
+                    <Form.Item
+                        label="Email"
+                        name="email"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input your email!',
+                            },
+                        ]}
+                    >
+                        <Input onChange={onNewEmail} />
+                    </Form.Item>
 
-                        <Form.Item
-                            label="Password"
-                            name="password"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Please input your password!',
-                                },
-                            ]}
-                        >
-                            <Input.Password onChange={onNewPassword} />
-                        </Form.Item>
-                        <Form.Item
-                            label="Password"
-                            name="repeatPassword"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Please input your password again!',
-                                },
-                            ]}
-                        >
-                            <Input.Password onChange={onNewRepeatPassword} />
-                        </Form.Item>
+                    <Form.Item
+                        label="Password"
+                        name="password"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input your password!',
+                            },
+                        ]}
+                    >
+                        <Input.Password onChange={onNewPassword} />
+                    </Form.Item>
+                    <Form.Item
+                        label="Password"
+                        name="repeatPassword"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input your password again!',
+                            },
+                        ]}
+                    >
+                        <Input.Password onChange={onNewRepeatPassword} />
+                    </Form.Item>
 
-                    </Form>
-                </Modal>
+                </Form>
+            </Modal>
+            <Space direction="vertical" size={10} style={{width: "100%"}}>
                 <Search placeholder="输入用户名查找" onSearch={onSearch} enterButton />
-            </div>
-            {<Table columns={columns} dataSource={userList.list} />}
+                <Table columns={columns} dataSource={userList.list} />
+            </Space>
         </div>
     );
 };
