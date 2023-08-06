@@ -1,12 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import "./index.scss"
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, Alert } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import useStore from '@/store';
 import ResponseStatus from '@/utils/status.Response';
+import { ConsoleSqlOutlined } from '@ant-design/icons';
+import USER_SESSION_KEY from '@/utils/common';
+
 
 const Login = () => {
+    const [loginError, setLoginError] = useState(0);
+
     const naviagte = useNavigate();
+
     const { loginStore } = useStore();
 
     const onFinish = async (values) => {
@@ -15,17 +21,26 @@ const Login = () => {
             username, password
         });
         if (resp.status === ResponseStatus.INVALID_LOGIN) {
+            setLoginError(1);
             naviagte("/login", { replace: true });
         } else if (resp.status === ResponseStatus.VALID_LOGIN) {
+            setLoginError(0);
+            sessionStorage.setItem(USER_SESSION_KEY, JSON.stringify(resp.data));
             naviagte("/", { replace: true });
+        } else if(resp.status === ResponseStatus.INVALID_ILLEGAL_USER_STATUS) {
+            setLoginError(2);
+            naviagte("/login", { replace: true });
         }
     };
 
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };
+
     return (
         <div className='login'>
+            {loginError === 1 ? <Alert type='error' message='username or password wrong' banner/> : <div></div>}
+            {loginError === 2 ? <Alert type='error' message='invalid user status, please contact with admin' banner/> : <div></div>}
             <div className='login-container'>
                 <Form
                     name="basic"

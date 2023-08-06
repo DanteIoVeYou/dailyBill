@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import useStore from "@/store";
-import { Form, Input, Table, Modal, Button, FloatButton, Space } from 'antd';
+import { Form, Input, Table, Modal, Button, FloatButton, Space, Switch } from 'antd';
 import { UserAddOutlined } from "@ant-design/icons";
 import http from "@/utils/http";
 import './index.scss';
@@ -24,7 +24,32 @@ const Admin = () => {
     const [newEmail, setNewEmail] = useState("");
 
 
+    const userAction = (record)=>{
+        return (
+            <div>
+                <Switch 
+                onClick={(checked)=>{
+                    console.log(record);
+                    const userid = record.userid;
+                    if(checked === true) {
+                        adminStore.updateUserState(userid, 1);
+                    } else {
+                        adminStore.updateUserState(userid, 0);
+                    }
+                }} 
+                defaultChecked={record.state === 1 ? true : false}
+                />
+            </div>
+        )
+    }
+
+
     const columns = [
+        {
+            title: 'userid',
+            dataIndex: 'userid',
+            className: 'columnHidden'
+        },
         {
             title: '用户名',
             dataIndex: 'username',
@@ -47,8 +72,9 @@ const Admin = () => {
             dataIndex: 'lastLoginTime',
         },
         {
-            title: '操作',
+            title: '封禁',
             key: 'action',
+            render: (text, record, index) => userAction(record)
         },
     ];
 

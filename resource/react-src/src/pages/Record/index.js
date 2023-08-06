@@ -1,8 +1,9 @@
 import { Table, Input, Form, Select, Space, Modal, Button, Radio, Tag, message, DatePicker, FloatButton } from "antd";
-import { FileAddOutlined } from "@ant-design/icons";
+import { ConsoleSqlOutlined, FileAddOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import useStore from "@/store";
 import './index.scss'
+import USER_SESSION_KEY from "@/utils/common";
 const Record = () => {
 
     const { recordStore } = useStore();
@@ -84,13 +85,14 @@ const Record = () => {
 
     useEffect(() => {
         const loadBillList = async () => {
+            const userid = JSON.parse(sessionStorage.getItem(USER_SESSION_KEY)).userid;
             const item = queryBill.item;
             const category = queryBill.category;
             const paymentMethod = queryBill.paymentMethod;
             const incomeExpense = queryBill.incomeExpense;
             const startDate = queryBill.startDate;
             const endDate = queryBill.endDate;
-            const resp = await recordStore.getBillList(item, category, paymentMethod, incomeExpense, startDate, endDate);
+            const resp = await recordStore.getBillList(userid, item, category, paymentMethod, incomeExpense, startDate, endDate);
             resp.data.map((item) => {
                 item.payDate = item.payDate.slice(0, 10);
             })
@@ -126,13 +128,14 @@ const Record = () => {
 
     const onFilterBill = async () => {
         console.log("filter: ", queryBill);
+        const userid = JSON.parse(sessionStorage.getItem(USER_SESSION_KEY)).userid;
         const item = queryBill.item;
         const category = queryBill.category;
         const paymentMethod = queryBill.paymentMethod;
         const incomeExpense = queryBill.incomeExpense;
         const startDate = queryBill.startDate;
         const endDate = queryBill.endDate;
-        const resp = await recordStore.getBillList(item, category, paymentMethod, incomeExpense, startDate, endDate);
+        const resp = await recordStore.getBillList(userid, item, category, paymentMethod, incomeExpense, startDate, endDate);
         setRefreshPage(!refreshPage);
     }
 
@@ -300,12 +303,14 @@ const Record = () => {
     const submitBillInfo = () => {
         setLoading(true);
         setTimeout(async () => {
+            const userid = JSON.parse(sessionStorage.getItem(USER_SESSION_KEY)).userid;
+            const username = JSON.parse(sessionStorage.getItem(USER_SESSION_KEY)).username;
             const item = newBill.item;
             const category = newBill.category;
             const paymentMethod = newBill.paymentMethod;
             const amount = newBill.amount;
             const incomeExpense = newBill.incomeExpense;
-            const resp = await recordStore.submitBillInfo(item, category, paymentMethod, amount, incomeExpense);
+            const resp = await recordStore.submitBillInfo(userid, username, item, category, paymentMethod, amount, incomeExpense);
             setRefreshPage(!refreshPage);
             setLoading(false);
             setOpen(false);

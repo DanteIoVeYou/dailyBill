@@ -4,9 +4,10 @@ class RecordStore {
     constructor() {
         makeAutoObservable(this);
     }
-    getBillList = async (item, category, paymentMethod, incomeExpense, startDate, endDate) => {
+    getBillList = async (userid, item, category, paymentMethod, incomeExpense, startDate, endDate) => {
         const resp = await http.get("/bill/billlist", {
             params: {
+                userid: userid,
                 item: item,
                 category: category,
                 paymentMethod: paymentMethod,
@@ -17,8 +18,10 @@ class RecordStore {
         });
         return resp;
     }
-    submitBillInfo = async (item, category, paymentMethod, amount, incomeExpense) => {
+    submitBillInfo = async (userid, username, item, category, paymentMethod, amount, incomeExpense) => {
         const resp = await http.post("/bill/add/bill", {
+            userid: userid,
+            username: username,
             item: item,
             category: category,
             paymentMethod: paymentMethod,
