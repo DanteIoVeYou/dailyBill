@@ -1,5 +1,5 @@
 import '@/App.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from '@/pages/Login';
 import MainLayout from '@/pages/MainLayout';
 import Record from '@/pages/Record';
@@ -9,7 +9,7 @@ import Admin from './pages/Admin';
 const App = () => {
   return (
     <div>
-      <BrowserRouter>
+      <Router>
         <Routes>
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Home />}></Route>
@@ -18,7 +18,7 @@ const App = () => {
           </Route>
           <Route path="/login" element={<Login />}></Route>
         </Routes>
-      </BrowserRouter>
+      </Router>
     </div>
   );
 };

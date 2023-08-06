@@ -14,4 +14,7 @@ public interface UserService {
 
     List<User> getUserList(String usuername);
 
+    int updateUserInfo(User user);
+
+    User findUserById(Integer userid);
 }

@@ -1,7 +1,10 @@
-import { Outlet, Link, useLocation } from "react-router-dom";
-import { Layout, Menu, theme } from 'antd';
+import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
+import { Button, Layout, Menu, theme } from 'antd';
 import React from 'react';
 import "./index.scss"
+import { PoweroffOutlined } from "@ant-design/icons";
+import USER_SESSION_KEY from "@/utils/common";
+
 const { Header, Content, Footer, Sider } = Layout;
 const MainLayout = () => {
     const {
@@ -10,6 +13,13 @@ const MainLayout = () => {
 
     const { pathname } = useLocation();
 
+    const naviagte = useNavigate();
+
+    const logout = ()=>{
+        sessionStorage.removeItem(USER_SESSION_KEY);
+        naviagte("/login", {replace: true});
+    };
+    
 
     return (
         <div>
@@ -29,7 +39,8 @@ const MainLayout = () => {
                         <Menu.Item key="/record">
                             <Link to="/record">记录中心</Link>
                         </Menu.Item>
-                        { 1===1 ? <Menu.Item key="/admin"><Link to="/admin">管理中心</Link></Menu.Item> : <></>}
+                        {/* { JSON.parse(sessionStorage.getItem(USER_SESSION_KEY)).isAdmin===1 ? <Menu.Item key="/admin"><Link to="/admin">管理中心</Link></Menu.Item> : <></>} */}
+                        { JSON.parse(sessionStorage.getItem(USER_SESSION_KEY)) !==null ? (JSON.parse(sessionStorage.getItem(USER_SESSION_KEY)).isAdmin===1 ? <Menu.Item key="/admin"><Link to="/admin">管理中心</Link></Menu.Item> : <></>) : (console.log("user not set"))}
                     </Menu>
                 </Sider>
                 <Layout>
@@ -38,7 +49,9 @@ const MainLayout = () => {
                             padding: 0,
                             background: colorBgContainer,
                         }}
-                    />
+                    >
+                        <Button type="text" icon={<PoweroffOutlined />} onClick={logout} style={{float: 'right'}}>logout</Button>
+                    </Header>
                     <Content
                         style={{
                             margin: '24px 16px 0',

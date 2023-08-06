@@ -18,6 +18,20 @@ public class BillServiceImpl implements BillService {
     private BillMapper billMapper;
 
     @Override
+    public List<Bill> getBillList(Integer userid, String item, String category, String paymentMethod, String incomeExpense, String startDate, String endDate) {
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq("userid", userid);
+        queryWrapper.like(StringUtils.isNotBlank(item), "item", item);
+        queryWrapper.eq(StringUtils.isNotBlank(paymentMethod), "paymentMethod", paymentMethod);
+        queryWrapper.eq(StringUtils.isNotBlank(category), "category", category);
+        queryWrapper.ge(StringUtils.isNotBlank(startDate), "payDate", startDate).le(StringUtils.isNotBlank(endDate), "payDate", endDate);
+        if(!incomeExpense.equals("all")) {
+            queryWrapper.eq("incomeExpense", incomeExpense);
+        }
+        return billMapper.selectList(queryWrapper);
+    }
+
+    @Override
     public List<Bill> getBillList(String item, String category, String paymentMethod, String incomeExpense, String startDate, String endDate) {
         QueryWrapper queryWrapper = new QueryWrapper();
         queryWrapper.like(StringUtils.isNotBlank(item), "item", item);
@@ -76,4 +90,6 @@ public class BillServiceImpl implements BillService {
 
         return billChartInfoList;
     }
+
+
 }

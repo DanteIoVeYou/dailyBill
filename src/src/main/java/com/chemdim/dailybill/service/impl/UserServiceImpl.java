@@ -39,4 +39,16 @@ public class UserServiceImpl implements UserService {
         queryWrapper.like(StringUtils.isNotBlank(username), "username", username);
         return userMapper.selectList(queryWrapper);
     }
+
+    @Override
+    public int updateUserInfo(User user) {
+        return userMapper.updateById(user);
+    }
+
+    @Override
+    public User findUserById(Integer userid) {
+        return userMapper.selectById(userid);
+    }
+
+
 }
