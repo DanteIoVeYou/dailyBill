@@ -2,6 +2,7 @@ import * as echarts from 'echarts';
 import { useEffect, useRef } from 'react';
 import useStore from '@/store';
 import moment from 'moment';
+import USER_SESSION_KEY from '@/utils/common';
 
 
 const Home = () => {
@@ -11,7 +12,8 @@ const Home = () => {
         const time = moment().format('YYYY-MM-DD').split('-');
         const year = time[0];
         const month = time[1];
-        const resp = await homeStore.getMouthBill(year, month);
+        const userid = JSON.parse(sessionStorage.getItem(USER_SESSION_KEY)).userid;
+        const resp = await homeStore.getMouthBill(userid, year, month);
         return resp;
     }
 

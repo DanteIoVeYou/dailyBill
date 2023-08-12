@@ -59,7 +59,7 @@ const Record = () => {
     });
 
     const [newBill, setNewBill] = useState({
-        item: "",
+        item: "999",
         category: "",
         paymentMethod: "",
         amount: 0,
@@ -99,6 +99,11 @@ const Record = () => {
             setBillList(resp.data);
         }
         loadBillList();
+        console.log("=========");
+        console.log("item: " + newBill.item);
+        console.log("cat: " + newBill.category);
+        console.log("paym: " + newBill.paymentMethod);
+        console.log("amount: " + newBill.amount);
     }, [refreshPage]);
 
     const formatIncomeExpense = (data) => {
@@ -394,7 +399,7 @@ const Record = () => {
                         name="newItem"
                         rules={[{ required: true, message: 'Please input your item!' }]}
                     >
-                        <Input onChange={onNewItem} />
+                        <Input type="text" value={newBill.item} onChange={onNewItem} />
                     </Form.Item>
 
                     <Form.Item
@@ -404,6 +409,7 @@ const Record = () => {
                     >
                         <Space wrap>
                             <Select
+                                value={newBill.category}
                                 defaultValue=""
                                 style={{ width: 120 }}
                                 onChange={onNewCategory}
@@ -441,6 +447,7 @@ const Record = () => {
                         rules={[{ required: true, message: '请选择支付方式' }]}
                     >
                         <Select
+                            value={newBill.paymentMethod}
                             defaultValue=""
                             style={{ width: 120 }}
                             onChange={onNewPaymentMethod}
@@ -462,7 +469,7 @@ const Record = () => {
                         name="newAmount"
                         rules={[{ required: true, message: '请填写金额' }]}
                     >
-                        <Input onChange={onNewAmount}></Input>
+                        <Input onChange={onNewAmount} value={newBill.amount}></Input>
 
                     </Form.Item>
                     <Form.Item
