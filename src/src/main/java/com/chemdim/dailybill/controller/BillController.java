@@ -108,10 +108,24 @@ public class BillController {
         return new ResponseBody<>(status, message, ret);
     }
     @GetMapping("/monthbill")
-    ResponseBody<List<BillChartInfo>> monthbill(@RequestParam String year, @RequestParam String month) {
+    ResponseBody<List<BillChartInfo>> monthbill(@RequestParam Integer userid, @RequestParam String year, @RequestParam String month, HttpServletRequest request) {
         int status = 0;
         String message = "";
-        List<BillChartInfo> ret = billService.monthbill(year, month);
+        User sessionUser = SessionUtil.getUserBySession(request);
+        List<BillChartInfo> ret = new ArrayList<>();
+        if(sessionUser != null) {
+            if(sessionUser.getIsAdmin() == 0) {
+                ret = billService.monthbill(userid, year, month);
+                status = ResponseStatus.VALID_BILL_CHART;
+                message = ResponseMessage.VALID_BILL_CHART;
+            } else {
+                // admin todo
+            }
+        } else {
+            status = ResponseStatus.INVALID_SESSION_EXPIRED;
+            message = ResponseMessage.INVALID_SESSION_EXPIRED;
+        }
+
         return new ResponseBody<>(status, message, ret);
     }
 }

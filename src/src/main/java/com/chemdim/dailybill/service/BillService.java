@@ -16,5 +16,8 @@ public interface BillService {
 
     List<BillChartInfo> monthbill(String year, String month);
 
+    List<BillChartInfo> monthbill(Integer userid, String year, String month);
+
     List<Bill> getBillList(String item, String category, String paymentMethod, String incomeExpense, String startDate, String endDate);
+
 }

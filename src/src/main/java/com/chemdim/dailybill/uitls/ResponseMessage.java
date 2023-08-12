@@ -16,6 +16,7 @@ public class ResponseMessage {
     public static final String INVALID_ADD_RECORD = "新增记录失败";
     public static final String INVALID_DELETE_RECORD = "删除记录失败";
     public static final String INVALID_MODIFY_RECORD = "修改记录失败";
+    public static final String INVALID_BILL_CHART = "账单列表获取失败";
     /**
      * valid status message
      */
@@ -29,4 +30,5 @@ public class ResponseMessage {
     public static final String VALID_ADD_RECORD = "新增记录成功";
     public static final String VALID_DELETE_RECORD = "删除记录成功";
     public static final String VALID_MODIFY_RECORD = "修改记录成功";
+    public static final String VALID_BILL_CHART = "账单列表获取成功";
 }

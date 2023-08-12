@@ -7,9 +7,10 @@ class HomeStore {
         makeAutoObservable(this);
     }
 
-    getMouthBill = async (year, month) => {
+    getMouthBill = async (userid, year, month) => {
         const resp = await http.get("/bill/monthbill", {
             params: {
+                userid: userid,
                 year: year,
                 month: month
             }

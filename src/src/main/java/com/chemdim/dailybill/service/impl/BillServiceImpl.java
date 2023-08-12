@@ -91,5 +91,37 @@ public class BillServiceImpl implements BillService {
         return billChartInfoList;
     }
 
+    @Override
+    public List<BillChartInfo> monthbill(Integer userid, String year, String month) {
+        QueryWrapper queryWrapper = new QueryWrapper();
+        String time = year + "-" + month;
+        queryWrapper.like(StringUtils.isNotBlank(time), "payDate", time);
+        queryWrapper.eq("userid", userid);
+        System.out.println(time);
+        List<Bill> billList = billMapper.selectList(queryWrapper);
+        System.out.println(billList);
+        List<BillChartInfo> billChartInfoList = new ArrayList<>();
+
+        HashMap<String, Float> categoryMap = new HashMap<>();
+        for(Bill bill: billList) {
+            String category = bill.getCategory();
+            if(categoryMap.containsKey(category)) {
+                float amount = categoryMap.get(category) + bill.getAmount();
+                categoryMap.put(category, amount);
+            } else {
+                float amount = bill.getAmount();
+                categoryMap.put(category, amount);
+            }
+        }
+        for(Map.Entry<String, Float> entry: categoryMap.entrySet()) {
+            BillChartInfo billChartInfo = new BillChartInfo(entry.getKey(), entry.getValue());
+            billChartInfoList.add(billChartInfo);
+        }
+        System.out.println(billChartInfoList);
+
+        return billChartInfoList;
+
+    }
+
 
 }
