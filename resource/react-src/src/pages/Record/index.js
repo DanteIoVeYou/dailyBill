@@ -47,6 +47,9 @@ const Record = () => {
             render: (text, record, index) => recordAction(record)
         },
     ];
+
+    const [form] = Form.useForm();
+
     const [billList, setBillList] = useState([]);
 
     const [queryBill, setQueryBill] = useState({
@@ -59,7 +62,7 @@ const Record = () => {
     });
 
     const [newBill, setNewBill] = useState({
-        item: "999",
+        item: "",
         category: "",
         paymentMethod: "",
         amount: 0,
@@ -316,16 +319,21 @@ const Record = () => {
             const amount = newBill.amount;
             const incomeExpense = newBill.incomeExpense;
             const resp = await recordStore.submitBillInfo(userid, username, item, category, paymentMethod, amount, incomeExpense);
-            setRefreshPage(!refreshPage);
-            setLoading(false);
-            setOpen(false);
             setNewBill({
                 item: "",
                 category: "",
                 paymentMethod: "",
-                amount: 0,
-                incomeExpense: ""
+                amount: "",
+                incomeExpense: "out"
             });
+            form.setFieldValue("newItem", "");
+            form.setFieldValue("newCategory", "");
+            form.setFieldValue("newAmount", "");
+            form.setFieldValue("newPaymentMethod", "");
+            form.setFieldValue("newIncomeExpense", "out");
+            setRefreshPage(!refreshPage);
+            setLoading(false);
+            setOpen(false);
         }, 1000);
     }
 
@@ -393,13 +401,13 @@ const Record = () => {
                     </Button>,
                 ]}
             >
-                <Form>
+                <Form form={form}>
                     <Form.Item
                         label="记录名"
                         name="newItem"
                         rules={[{ required: true, message: 'Please input your item!' }]}
                     >
-                        <Input type="text" value={newBill.item} onChange={onNewItem} />
+                        <Input type="text" onChange={onNewItem} />
                     </Form.Item>
 
                     <Form.Item
@@ -493,6 +501,8 @@ const Record = () => {
                 <Form.Item
                     label="记录名"
                     name="item"
+                    labelCol={{span: 2, offset: 0}}
+                    wrapperCol={{span: 8, offset: 0}}
                     rules={[{ required: false, message: 'Please input your item!' }]}
                 >
                     <Input onChange={onQueryItem} />
@@ -501,6 +511,8 @@ const Record = () => {
                 <Form.Item
                     label="分类"
                     name="category"
+                    labelCol={{span: 2, offset: 0}}
+                    wrapperCol={{span: 8, offset: 0}}
                     rules={[{ required: false, message: 'Please choose your category!' }]}
                 >
                     <Select
@@ -538,6 +550,8 @@ const Record = () => {
                 <Form.Item
                     label="支付方式"
                     name="paymentMethod"
+                    labelCol={{span: 2}}
+                    wrapperCol={{span: 8, offset: 0}}
                     rules={[{ required: false, message: 'Please input your item!' }]}
                 >
                     <Select
@@ -560,6 +574,8 @@ const Record = () => {
                 <Form.Item
                     label="收支选择"
                     name="incomeExpense"
+                    labelCol={{span: 2, offset: 0}}
+                    wrapperCol={{span: 8, offset: 0}}
                 >
                     <Radio.Group onChange={onQueryIncomeExpense} defaultValue="all" value={queryBill.incomeExpense}>
                         <Radio value="in" >收入</Radio>
@@ -570,6 +586,9 @@ const Record = () => {
 
                 <Form.Item
                     label="日期范围"
+                    name="dateRange"
+                    labelCol={{span: 2, offset: 0}}
+                    wrapperCol={{span: 8, offset: 0}}
                 >
                     <RangePicker onChange={onQueryDateRange} />
                 </Form.Item>
