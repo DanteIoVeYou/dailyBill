@@ -39,7 +39,6 @@ const MainLayout = () => {
                         <Menu.Item key="/record">
                             <Link to="/record">记录中心</Link>
                         </Menu.Item>
-                        {/* { JSON.parse(sessionStorage.getItem(USER_SESSION_KEY)).isAdmin===1 ? <Menu.Item key="/admin"><Link to="/admin">管理中心</Link></Menu.Item> : <></>} */}
                         { JSON.parse(sessionStorage.getItem(USER_SESSION_KEY)) !==null ? (JSON.parse(sessionStorage.getItem(USER_SESSION_KEY)).isAdmin===1 ? <Menu.Item key="/admin"><Link to="/admin">管理中心</Link></Menu.Item> : <></>) : (console.log("user not set"))}
                     </Menu>
                 </Sider>
