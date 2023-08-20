@@ -1,4 +1,4 @@
-import { Table, Input, Form, Select, Space, Modal, Button, Radio, Tag, message, DatePicker, FloatButton } from "antd";
+import { Table, Input, Form, Select, Space, Modal, Button, Radio, Tag, message, DatePicker, FloatButton, Card } from "antd";
 import { ConsoleSqlOutlined, FileAddOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import useStore from "@/store";
@@ -27,6 +27,8 @@ const Record = () => {
         {
             title: '金额',
             dataIndex: 'amount',
+            defaultSortOrder: 'descend',
+            sorter: (a, b) => a.amount - b.amount
         },
         {
             title: '分类',
@@ -491,115 +493,120 @@ const Record = () => {
                     </Form.Item>
                 </Form>
             </Modal>
-            <Form
-                name="filterBill"
-                onFinish={onFilterBill}
-                autoComplete="off"
-                labelCol={{span: 1}}
-                wrapperCol={{span: 23}}
-            >
-                <Form.Item
-                    label="记录名"
-                    name="item"
-                    labelCol={{span: 2, offset: 0}}
-                    wrapperCol={{span: 8, offset: 0}}
-                    rules={[{ required: false, message: 'Please input your item!' }]}
+            <Card style={{marginBottom: 20}}>
+                <Form
+                    name="filterBill"
+                    onFinish={onFilterBill}
+                    autoComplete="off"
+                    labelCol={{span: 1}}
+                    wrapperCol={{span: 23}}
                 >
-                    <Input onChange={onQueryItem} />
-                </Form.Item>
+                    <Form.Item
+                        label="记录名"
+                        name="item"
+                        labelCol={{span: 2, offset: 0}}
+                        wrapperCol={{span: 8, offset: 0}}
+                        rules={[{ required: false, message: 'Please input your item!' }]}
+                    >
+                        <Input onChange={onQueryItem} />
+                    </Form.Item>
 
-                <Form.Item
-                    label="分类"
-                    name="category"
-                    labelCol={{span: 2, offset: 0}}
-                    wrapperCol={{span: 8, offset: 0}}
-                    rules={[{ required: false, message: 'Please choose your category!' }]}
-                >
-                    <Select
-                        defaultValue=""
-                        style={{ width: 120 }}
-                        onChange={onQueryCategory}
-                        options={[
-                            { value: '' },
-                            { value: '餐饮美食' },
-                            { value: '服饰装扮' },
-                            { value: '日用百货' },
-                            { value: '家具家装' },
-                            { value: '数码电器' },
-                            { value: '户外运动' },
-                            { value: '美容美发' },
-                            { value: '母婴亲子' },
-                            { value: '宠物' },
-                            { value: '公交出行' },
-                            { value: '爱车养车' },
-                            { value: '住房物业' },
-                            { value: '酒店旅游' },
-                            { value: '文化休闲' },
-                            { value: '医疗健康' },
-                            { value: '公益' },
-                            { value: '投资理财' },
-                            { value: '保险' },
-                            { value: '借贷' },
-                            { value: '缴费充值' },
-                            { value: '红包' },
-                            { value: '转账' },
-                            { value: '账户存取' },
-                        ]}
-                    />
-                </Form.Item>
-                <Form.Item
-                    label="支付方式"
-                    name="paymentMethod"
-                    labelCol={{span: 2}}
-                    wrapperCol={{span: 8, offset: 0}}
-                    rules={[{ required: false, message: 'Please input your item!' }]}
-                >
-                    <Select
-                        defaultValue=""
-                        style={{ width: 120 }}
-                        onChange={onQueryPaymentMethod}
-                        options={[
-                            { value: '' },
-                            { value: '现金' },
-                            { value: '数字人民币' },
-                            { value: '微信' },
-                            { value: '支付宝' },
-                            { value: '借记卡' },
-                            { value: '信用卡' },
-                            { value: '花呗白条' },
-                            { value: '加密货币' },
-                        ]}
-                    />
-                </Form.Item>
-                <Form.Item
-                    label="收支选择"
-                    name="incomeExpense"
-                    labelCol={{span: 2, offset: 0}}
-                    wrapperCol={{span: 8, offset: 0}}
-                >
-                    <Radio.Group onChange={onQueryIncomeExpense} defaultValue="all" value={queryBill.incomeExpense}>
-                        <Radio value="in" >收入</Radio>
-                        <Radio value="out" >支出</Radio>
-                        <Radio value="all" >所有</Radio>
-                    </Radio.Group>
-                </Form.Item>
+                    <Form.Item
+                        label="分类"
+                        name="category"
+                        labelCol={{span: 2, offset: 0}}
+                        wrapperCol={{span: 8, offset: 0}}
+                        rules={[{ required: false, message: 'Please choose your category!' }]}
+                    >
+                        <Select
+                            defaultValue=""
+                            style={{ width: 120 }}
+                            onChange={onQueryCategory}
+                            options={[
+                                { value: '' },
+                                { value: '餐饮美食' },
+                                { value: '服饰装扮' },
+                                { value: '日用百货' },
+                                { value: '家具家装' },
+                                { value: '数码电器' },
+                                { value: '户外运动' },
+                                { value: '美容美发' },
+                                { value: '母婴亲子' },
+                                { value: '宠物' },
+                                { value: '公交出行' },
+                                { value: '爱车养车' },
+                                { value: '住房物业' },
+                                { value: '酒店旅游' },
+                                { value: '文化休闲' },
+                                { value: '医疗健康' },
+                                { value: '公益' },
+                                { value: '投资理财' },
+                                { value: '保险' },
+                                { value: '借贷' },
+                                { value: '缴费充值' },
+                                { value: '红包' },
+                                { value: '转账' },
+                                { value: '账户存取' },
+                            ]}
+                        />
+                    </Form.Item>
+                    <Form.Item
+                        label="支付方式"
+                        name="paymentMethod"
+                        labelCol={{span: 2}}
+                        wrapperCol={{span: 8, offset: 0}}
+                        rules={[{ required: false, message: 'Please input your item!' }]}
+                    >
+                        <Select
+                            defaultValue=""
+                            style={{ width: 120 }}
+                            onChange={onQueryPaymentMethod}
+                            options={[
+                                { value: '' },
+                                { value: '现金' },
+                                { value: '数字人民币' },
+                                { value: '微信' },
+                                { value: '支付宝' },
+                                { value: '借记卡' },
+                                { value: '信用卡' },
+                                { value: '花呗白条' },
+                                { value: '加密货币' },
+                            ]}
+                        />
+                    </Form.Item>
+                    <Form.Item
+                        label="收支选择"
+                        name="incomeExpense"
+                        labelCol={{span: 2, offset: 0}}
+                        wrapperCol={{span: 8, offset: 0}}
+                    >
+                        <Radio.Group onChange={onQueryIncomeExpense} defaultValue="all" value={queryBill.incomeExpense}>
+                            <Radio value="in" >收入</Radio>
+                            <Radio value="out" >支出</Radio>
+                            <Radio value="all" >所有</Radio>
+                        </Radio.Group>
+                    </Form.Item>
 
-                <Form.Item
-                    label="日期范围"
-                    name="dateRange"
-                    labelCol={{span: 2, offset: 0}}
-                    wrapperCol={{span: 8, offset: 0}}
-                >
-                    <RangePicker onChange={onQueryDateRange} />
-                </Form.Item>
+                    <Form.Item
+                        label="日期范围"
+                        name="dateRange"
+                        labelCol={{span: 2, offset: 0}}
+                        wrapperCol={{span: 8, offset: 0}}
+                    >
+                        <RangePicker onChange={onQueryDateRange} />
+                    </Form.Item>
 
-                <Form.Item>
-                    <Button type="primary" htmlType="submit" size="large" block onClick={onFilterBill}>
-                        筛选
-                    </Button>
-                </Form.Item>
-            </Form>
-            {<Table columns={columns} dataSource={billList} />}
+                    <Form.Item>
+                        <Button type="primary" htmlType="submit" size="large" block onClick={onFilterBill}>
+                            筛选
+                        </Button>
+                    </Form.Item>
+                </Form>
+            </Card>
+
+            <Card title="records">
+                {<Table columns={columns} dataSource={billList} />}
+            </Card>
             <Modal
                 open={oldOpen}
                 title="Title"

@@ -1,8 +1,8 @@
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
-import { Button, Layout, Menu, theme } from 'antd';
+import { Button, FloatButton, Layout, Menu, theme } from 'antd';
 import React from 'react';
 import "./index.scss"
-import { PoweroffOutlined } from "@ant-design/icons";
+import { AccountBookFilled, AccountBookOutlined, AccountBookTwoTone, HomeFilled, HomeOutlined, PoweroffOutlined, UserOutlined } from "@ant-design/icons";
 import USER_SESSION_KEY from "@/utils/common";
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -23,23 +23,24 @@ const MainLayout = () => {
 
     return (
         <div>
-            <Layout>
+            <Layout style={{width: '100vw', height: '100vh'}}>
                 <Sider
-                    breakpoint="lg"
-                    collapsedWidth="0"
+                    // breakpoint="lg"
+                    // collapsedWidth="0"
+                    style={{width: 200}}
                 >
                     <Menu
                         theme="dark"
                         mode="inline"
                         defaultSelectedKeys={[pathname]}
                     >
-                        <Menu.Item key="/">
+                        <Menu.Item key="/" icon={<HomeOutlined />}>
                             <Link to="/">个人主页</Link>
                         </Menu.Item>
-                        <Menu.Item key="/record">
+                        <Menu.Item key="/record" icon={<AccountBookOutlined />}>
                             <Link to="/record">记录中心</Link>
                         </Menu.Item>
-                        { JSON.parse(sessionStorage.getItem(USER_SESSION_KEY)) !==null ? (JSON.parse(sessionStorage.getItem(USER_SESSION_KEY)).isAdmin===1 ? <Menu.Item key="/admin"><Link to="/admin">管理中心</Link></Menu.Item> : <></>) : (console.log("user not set"))}
+                        { JSON.parse(sessionStorage.getItem(USER_SESSION_KEY)) !==null ? (JSON.parse(sessionStorage.getItem(USER_SESSION_KEY)).isAdmin===1 ? <Menu.Item key="/admin" icon={<UserOutlined />}><Link to="/admin">管理中心</Link></Menu.Item> : <></>) : (console.log("user not set"))}
                     </Menu>
                 </Sider>
                 <Layout>
@@ -49,12 +50,14 @@ const MainLayout = () => {
                             background: colorBgContainer,
                         }}
                     >
+                        <span style={{fontSize: '20px', fontWeight: 'bold', paddingLeft: '2rem'}}>dailybill</span>
                         <Button type="text" icon={<PoweroffOutlined />} onClick={logout} style={{float: 'right'}}>logout</Button>
                     </Header>
                     <Content
                         style={{
                             margin: '24px 16px 0',
                         }}
+                        className="layout-content"
                     >
                         <div
                             style={{
@@ -76,6 +79,7 @@ const MainLayout = () => {
                     </Footer>
                 </Layout>
             </Layout>
+            <FloatButton.BackTop />
         </div>
 
     );
