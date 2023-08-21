@@ -1,5 +1,5 @@
 import { Table, Input, Form, Select, Space, Modal, Button, Radio, Tag, message, DatePicker, FloatButton, Card } from "antd";
-import { ConsoleSqlOutlined, FileAddOutlined } from "@ant-design/icons";
+import { ConsoleSqlOutlined, DownOutlined, FileAddOutlined, SettingOutlined, UpOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import useStore from "@/store";
 import './index.scss'
@@ -80,6 +80,8 @@ const Record = () => {
         incomeExpense: "out"
     });
 
+    const [filterCardUpDown, setFilterCardUpDown] = useState(1);
+
     const [refreshPage, setRefreshPage] = useState(false);
 
     const [open, setOpen] = useState(false);
@@ -134,6 +136,15 @@ const Record = () => {
                 <Button type="text" onClick={() => deleteBillInfo(record.recordid)}>删除</Button>
             </div>
         );
+    }
+
+    const filterCardAction = () => {
+        if(filterCardUpDown === 0) {
+            setFilterCardUpDown(1);
+        } else {
+            setFilterCardUpDown(0);
+        }
+        setRefreshPage(!refreshPage);
     }
 
     const onFilterBill = async () => {
@@ -493,13 +504,18 @@ const Record = () => {
                     </Form.Item>
                 </Form>
             </Modal>
-            <Card style={{marginBottom: 20}}>
+            <Card 
+                style={{marginBottom: 20}}
+                title="Filter Items"
+                actions={[<a onClick={filterCardAction}>{filterCardUpDown === 0 ? <DownOutlined /> : <UpOutlined />}</a>]}
+            >
                 <Form
                     name="filterBill"
                     onFinish={onFilterBill}
                     autoComplete="off"
                     labelCol={{span: 1}}
                     wrapperCol={{span: 23}}
+                    style={{display: filterCardUpDown===0?"none":"inline"}}
                 >
                     <Form.Item
                         label="记录名"
