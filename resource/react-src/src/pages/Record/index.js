@@ -19,6 +19,17 @@ const Record = () => {
         {
             title: '时间',
             dataIndex: 'payDate',
+            sorter: (a, b) => {
+                const time1 = a.payDate;
+                const time2 = b.payDate;
+                if(time1 === time2) {
+                    return 0;
+                } else if(time1 > time2) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+            } 
         },
         {
             title: '流水名',
