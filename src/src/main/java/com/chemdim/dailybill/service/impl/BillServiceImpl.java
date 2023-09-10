@@ -24,7 +24,7 @@ public class BillServiceImpl implements BillService {
         queryWrapper.like(StringUtils.isNotBlank(item), "item", item);
         queryWrapper.eq(StringUtils.isNotBlank(paymentMethod), "paymentMethod", paymentMethod);
         queryWrapper.eq(StringUtils.isNotBlank(category), "category", category);
-        queryWrapper.ge(StringUtils.isNotBlank(startDate), "payDate", startDate).le(StringUtils.isNotBlank(endDate), "payDate", endDate);
+        queryWrapper.ge(StringUtils.isNotBlank(startDate), "payDate", startDate).le(StringUtils.isNotBlank(endDate), "payDate", (endDate + " 23:59:59"));
         if(!incomeExpense.equals("all")) {
             queryWrapper.eq("incomeExpense", incomeExpense);
         }
@@ -37,7 +37,7 @@ public class BillServiceImpl implements BillService {
         queryWrapper.like(StringUtils.isNotBlank(item), "item", item);
         queryWrapper.eq(StringUtils.isNotBlank(paymentMethod), "paymentMethod", paymentMethod);
         queryWrapper.eq(StringUtils.isNotBlank(category), "category", category);
-        queryWrapper.ge(StringUtils.isNotBlank(startDate), "payDate", startDate).le(StringUtils.isNotBlank(endDate), "payDate", endDate);
+        queryWrapper.ge(StringUtils.isNotBlank(startDate), "payDate", startDate).le(StringUtils.isNotBlank(endDate), "payDate", (endDate + " 23:59:59"));
         if(!incomeExpense.equals("all")) {
             queryWrapper.eq("incomeExpense", incomeExpense);
         }
@@ -66,6 +66,7 @@ public class BillServiceImpl implements BillService {
         QueryWrapper queryWrapper = new QueryWrapper();
         String time = year + "-" + month;
         queryWrapper.like(StringUtils.isNotBlank(time), "payDate", time);
+        queryWrapper.eq("incomeExpense", "out");
         System.out.println(time);
         List<Bill> billList = billMapper.selectList(queryWrapper);
         System.out.println(billList);
@@ -97,6 +98,7 @@ public class BillServiceImpl implements BillService {
         String time = year + "-" + month;
         queryWrapper.like(StringUtils.isNotBlank(time), "payDate", time);
         queryWrapper.eq("userid", userid);
+        queryWrapper.eq("incomeExpense", "out");
         System.out.println(time);
         List<Bill> billList = billMapper.selectList(queryWrapper);
         System.out.println(billList);

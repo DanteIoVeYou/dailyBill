@@ -1,3 +1,32 @@
-.columnHidden {
+.columnhidden {
     display: none;
 }
+
+.ant-table-container {
+    height: 100%;
+}
+
+.ant-table-wrapper {
+    height: 100%;
+}
+
+.filterWord {
+    color: rgb(215, 182, 90);
+}
+
+.ant-table-wrapper .ant-table-column-sorter-down.active {
+    color: rgb(215, 182, 90);
+}
+
+.ant-table-wrapper .ant-table-column-sorter-up.active {
+    color: rgb(215, 182, 90);
+}
+
+.ant-btn-primary {
+    background-color: rgb(215, 182, 90);
+}
+
+.ant-btn-primary:not(:disabled):hover {
+    background-color: rgba(215, 182, 90, 0.8);
+}
+

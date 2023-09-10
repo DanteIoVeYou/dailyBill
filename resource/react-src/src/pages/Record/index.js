@@ -1,9 +1,10 @@
-import { Table, Input, Form, Select, Space, Modal, Button, Radio, Tag, message, DatePicker, FloatButton } from "antd";
-import { ConsoleSqlOutlined, FileAddOutlined } from "@ant-design/icons";
+import { Table, Input, Form, Select, Space, Modal, Button, Radio, Tag, message, DatePicker, FloatButton, Card, ConfigProvider } from "antd";
+import { ConsoleSqlOutlined, DownOutlined, FileAddOutlined, SettingOutlined, UpOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import useStore from "@/store";
 import './index.scss'
 import USER_SESSION_KEY from "@/utils/common";
+import { color } from "echarts";
 const Record = () => {
 
     const { recordStore } = useStore();
@@ -19,6 +20,18 @@ const Record = () => {
         {
             title: '时间',
             dataIndex: 'payDate',
+            defaultSortOrder: 'descend',
+            sorter: (a, b) => {
+                const time1 = a.payDate;
+                const time2 = b.payDate;
+                if(time1 === time2) {
+                    return 0;
+                } else if(time1 > time2) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+            } 
         },
         {
             title: '流水名',
@@ -27,6 +40,7 @@ const Record = () => {
         {
             title: '金额',
             dataIndex: 'amount',
+            sorter: (a, b) => a.amount - b.amount
         },
         {
             title: '分类',
@@ -78,6 +92,8 @@ const Record = () => {
         incomeExpense: "out"
     });
 
+    const [filterCardUpDown, setFilterCardUpDown] = useState(0);
+
     const [refreshPage, setRefreshPage] = useState(false);
 
     const [open, setOpen] = useState(false);
@@ -88,7 +104,12 @@ const Record = () => {
 
     useEffect(() => {
         const loadBillList = async () => {
-            const userid = JSON.parse(sessionStorage.getItem(USER_SESSION_KEY)).userid;
+            let userid = 0;
+            if(JSON.parse(sessionStorage.getItem(USER_SESSION_KEY)) === null) {
+                console.log("not login")
+            } else {
+                userid = JSON.parse(sessionStorage.getItem(USER_SESSION_KEY)).userid;
+            }
             const item = queryBill.item;
             const category = queryBill.category;
             const paymentMethod = queryBill.paymentMethod;
@@ -102,17 +123,12 @@ const Record = () => {
             setBillList(resp.data);
         }
         loadBillList();
-        console.log("=========");
-        console.log("item: " + newBill.item);
-        console.log("cat: " + newBill.category);
-        console.log("paym: " + newBill.paymentMethod);
-        console.log("amount: " + newBill.amount);
     }, [refreshPage]);
 
     const formatIncomeExpense = (data) => {
         const type = {
-            in: <Tag color="green">收入</Tag>,
-            out: <Tag color="#f50">支出</Tag>
+            in: <Tag color="#0c0">收入</Tag>,
+            out: <Tag color="#f60">支出</Tag>
         };
         return type[data];
     }
@@ -134,16 +150,15 @@ const Record = () => {
         );
     }
 
+    const filterCardAction = () => {
+        if(filterCardUpDown === 0) {
+            setFilterCardUpDown(1);
+        } else {
+            setFilterCardUpDown(0);
+        }
+    }
+
     const onFilterBill = async () => {
-        console.log("filter: ", queryBill);
-        const userid = JSON.parse(sessionStorage.getItem(USER_SESSION_KEY)).userid;
-        const item = queryBill.item;
-        const category = queryBill.category;
-        const paymentMethod = queryBill.paymentMethod;
-        const incomeExpense = queryBill.incomeExpense;
-        const startDate = queryBill.startDate;
-        const endDate = queryBill.endDate;
-        const resp = await recordStore.getBillList(userid, item, category, paymentMethod, incomeExpense, startDate, endDate);
         setRefreshPage(!refreshPage);
     }
 
@@ -194,13 +209,15 @@ const Record = () => {
     }
 
     const onQueryDateRange = (value) => {
+        const startDate = value === null ? "" : value[0].format("YYYY-MM-DD");
+        const endDate = value === null ? "" : value[1].format("YYYY-MM-DD");
         setQueryBill({
             item: queryBill.item,
             category: queryBill.category,
             paymentMethod: queryBill.paymentMethod,
             incomeExpense: queryBill.incomeExpense,
-            startDate: value[0].format("YYYY-MM-DD"),
-            endDate: value[1].format("YYYY-MM-DD"),
+            startDate: startDate,
+            endDate: endDate
         });
     }
 
@@ -319,6 +336,7 @@ const Record = () => {
             const amount = newBill.amount;
             const incomeExpense = newBill.incomeExpense;
             const resp = await recordStore.submitBillInfo(userid, username, item, category, paymentMethod, amount, incomeExpense);
+            // clear newBill
             setNewBill({
                 item: "",
                 category: "",
@@ -351,6 +369,7 @@ const Record = () => {
             setLoading(false);
             setOldOpen(false);
         }, 1000);
+        showModifyInfo();
     }
 
     const deleteBillInfo = async (recordid) => {
@@ -387,6 +406,7 @@ const Record = () => {
     return (
         <div>
             <FloatButton onClick={ openAddBillModal } icon={ <FileAddOutlined /> }/>
+
             <Modal
                 open={open}
                 title="Title"
@@ -491,12 +511,17 @@ const Record = () => {
                     </Form.Item>
                 </Form>
             </Modal>
+
+            <div style={{marginBottom: "1em"}}>
+                <a onClick={filterCardAction}>{filterCardUpDown === 0 ? <div className="filterWord">Show Filter<DownOutlined /></div> : <div className="filterWord">Hide Filter<UpOutlined /></div>}</a>
+            </div>
+
             <Form
                 name="filterBill"
-                onFinish={onFilterBill}
                 autoComplete="off"
                 labelCol={{span: 1}}
                 wrapperCol={{span: 23}}
+                style={{display: filterCardUpDown===0?"none":"inline"}}
             >
                 <Form.Item
                     label="记录名"
@@ -577,8 +602,13 @@ const Record = () => {
                     labelCol={{span: 2, offset: 0}}
                     wrapperCol={{span: 8, offset: 0}}
                 >
-                    <Radio.Group onChange={onQueryIncomeExpense} defaultValue="all" value={queryBill.incomeExpense}>
-                        <Radio value="in" >收入</Radio>
+                    <Radio.Group 
+                        onChange={onQueryIncomeExpense} 
+                        defaultValue="all" 
+                        value={queryBill.incomeExpense}
+                        buttonStyle="solid"
+                    >
+                        <Radio value="in" buttonSolidCheckedBg="red">收入</Radio>
                         <Radio value="out" >支出</Radio>
                         <Radio value="all" >所有</Radio>
                     </Radio.Group>
@@ -594,12 +624,27 @@ const Record = () => {
                 </Form.Item>
 
                 <Form.Item>
-                    <Button type="primary" htmlType="submit" size="large" block onClick={onFilterBill}>
+                    <Button  type="primary" htmlType="submit" size="large" block onClick={onFilterBill}>
                         筛选
                     </Button>
                 </Form.Item>
+
             </Form>
-            {<Table columns={columns} dataSource={billList} />}
+            
+            <Card title="Records" size="small">
+                {<Table 
+                    columns={columns} 
+                    size="small" 
+                    dataSource={billList} 
+                    pagination={
+                        {
+                            hideOnSinglePage: true,
+                            showTotal: (total) => "Total " + total + " records"  
+                        }
+                    }
+                />}
+            </Card>
+
             <Modal
                 open={oldOpen}
                 title="Title"
@@ -711,6 +756,7 @@ const Record = () => {
                     </Form.Item>
                 </Form>
             </Modal>
+            
             Record
         </div>
     )

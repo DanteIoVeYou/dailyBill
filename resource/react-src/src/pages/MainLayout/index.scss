@@ -3,10 +3,46 @@
     padding: 0;
 }
 
+.logo {
+    width: 75%;
+    height: auto;
+    margin-left: 1em;
+}
+
 .ant-layout {
     height: 100vh;
 }
 
+.ant-menu-light .ant-menu-item-selected {
+    background-color: rgb(215, 182, 90);
+}
+
+.ant-menu-light .ant-menu-item-selected  {
+    color: white 
+}
+
+.ant-menu-light .ant-menu-item a:hover {
+    color: white 
+}
+
 .layout-content {
     overflow-y: auto;
+}
+
+.ant-layout .ant-layout-sider {
+    background-color: rgb(32, 32, 32);
+}
+
+.ant-layout .ant-layout-header {
+    background-color: rgb(255, 255, 255);
+}
+
+.ant-layout .ant-layout-footer {
+    padding: 6px 50px;
+    font-weight: 400;
+}
+
+.ant-menu-light {
+    background-color: rgb(32, 32, 32);
+    color: white;
 }
