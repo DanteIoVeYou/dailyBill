@@ -4,6 +4,7 @@ import React from 'react';
 import "./index.scss"
 import { AccountBookFilled, AccountBookOutlined, AccountBookTwoTone, HomeFilled, HomeOutlined, PoweroffOutlined, UserOutlined } from "@ant-design/icons";
 import USER_SESSION_KEY from "@/utils/common";
+import logo from "../../assets/bill.png" 
 
 const { Header, Content, Footer, Sider } = Layout;
 const MainLayout = () => {
@@ -29,8 +30,11 @@ const MainLayout = () => {
                     // collapsedWidth="0"
                     style={{width: 200}}
                 >
+                    <div>
+                        <img src={logo} className="logo"/>
+                    </div>
                     <Menu
-                        theme="dark"
+                        // theme="dark"
                         mode="inline"
                         defaultSelectedKeys={[pathname]}
                     >
@@ -47,11 +51,12 @@ const MainLayout = () => {
                     <Header
                         style={{
                             padding: 0,
-                            background: colorBgContainer,
                         }}
                     >
-                        <span style={{fontSize: '20px', fontWeight: 'bold', paddingLeft: '2rem'}}>dailybill</span>
-                        <Button type="text" icon={<PoweroffOutlined />} onClick={logout} style={{float: 'right'}}>logout</Button>
+                        {/* <span style={{fontSize: '30px', fontWeight: 'bold', paddingLeft: '2rem'}}>dailyBill</span> */}
+                        <span>
+                            <Button type="text" icon={<PoweroffOutlined />} onClick={logout} style={{float: 'right', height: '100%', marginRight: '0.3em'}}>logout</Button>
+                        </span>
                     </Header>
                     <Content
                         style={{
@@ -72,10 +77,10 @@ const MainLayout = () => {
                     </Content>
                     <Footer
                         style={{
-                            textAlign: 'center',
+                            textAlign: 'center'
                         }}
                     >
-                        dailybill ©2023 Created by Chemdim
+                        dailyBill ©2023 Chemdim. All rights reserved.
                     </Footer>
                 </Layout>
             </Layout>

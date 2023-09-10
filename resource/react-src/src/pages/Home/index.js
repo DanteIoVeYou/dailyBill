@@ -4,6 +4,7 @@ import useStore from '@/store';
 import moment from 'moment';
 import USER_SESSION_KEY from '@/utils/common';
 import { Tabs } from 'antd';
+import "./index.scss"
 
 
 const Home = () => {
